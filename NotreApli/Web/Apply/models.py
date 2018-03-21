@@ -60,6 +60,12 @@ association_capteur_donnee = db.Table("association_capteur_donnee",
                                       db.metadata,
                                       db.Column("capteur_id", db.Integer, db.ForeignKey("capteur.idCapt"), primary_key = True),
                                       db.Column("donnee_id", db.Integer, db.ForeignKey("donnee.idDonnee"), primary_key = True))
+
+association_liste_actions=db.Table("association_liste_actions",
+                                    db.metadata,
+                                    db.Column("idListe", db.Integer, db.ForeignKey("liste.idListe"), primary_key = True),
+                                    db.Column("idActions", db.Integer, db.ForeignKey("action.idActions"),primary_key=True))
+
 class Coordonnees(db.Model):
     """
     Coordinates can specify the position of a parterre
@@ -402,6 +408,36 @@ class Donnee(db.Model):
 
     def get_date_donnee(self):
         return str(self.dateRel)
+
+class Actions(db.Model):
+    idActions=db.Column(db.Integer, primary_key= True)
+    contenu=db.Column(db.String(100))
+
+    def __init__(self,contenu):
+        self.contenu=contenu
+
+    def __repr__(self):
+        return "%s" % (self.contenu)
+
+    def getIdActions(self):
+        return self.idActions
+
+    def getContenu(self):
+        return self.contenu
+
+class Liste(db.Model):
+    idListe=db.Column(db.Integer, primary_key=True)
+    listeActions    = db.relationship("Actions",
+                                      secondary = "association_liste_actions",
+                                      lazy = "dynamic",
+                                      backref = db.backref("action", lazy = "dynamic"),
+                                      order_by  = "Actions.id")
+
+    
+    def get_val(self):
+        return self.listeActions
+
+
 
 
 def get_user(username):
