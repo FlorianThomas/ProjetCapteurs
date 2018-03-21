@@ -11,7 +11,8 @@ from flask_login import login_user,current_user, logout_user, login_required
 def home():
     return render_template(
         "home.html",
-        title = "Capteurs")
+        title = "Capteurs",
+        liste = get_listeActions(1))
 
 @app.route("/Parterre/")
 def parterre():
@@ -58,6 +59,11 @@ def save_inscription():
             nomU    = f.get_name(),
             prenomU = f.get_surname())
         db.session.add(user)
+        i = Actions(
+            contenu = "Bienvenue à "+f.get_id(),
+            liste = 1
+        )
+        db.session.add(i)
         db.session.commit()
         return redirect(url_for('login'))
     return render_template(
@@ -154,6 +160,11 @@ def new_capteur_saving():
             tel        = f.get_phoneNumber(),
             TypeMesure = f.get_typeMesure().get_id(),
             parterre   = f.get_parterre().get_id())
+        a = Actions(
+            contenu = "Ajout d'un nouveau capteur "+f.get_name(),
+            liste = 1
+        )
+        db.session.add(a)
         db.session.add(o)
         db.session.commit()
         return redirect(url_for('capteur_info', id = o.get_id()))
@@ -175,6 +186,11 @@ def delete_capteur():
         else:
             a = get_capteur(int(request.form['del']))
             a.clear_datas()
+            ac = Actions(
+                contenu = "Suppresion du capteur "+a.get_name(),
+                liste = 1
+            )
+            db.session.add(ac)
             db.session.delete(a)
             db.session.commit()
     return render_template(
@@ -197,6 +213,11 @@ def delete_part():
             for capteur in a.get_capteurs():
                 a.delete_capteur(capteur)
                 capteur.set_parterre(1)
+            p = Actions(
+                contenu = "Suppresion du parterre "+a.get_name(),
+                liste = 1
+            )
+            db.session.add(p)
             db.session.delete(a)
             db.session.commit()
     return render_template(
@@ -209,6 +230,11 @@ def delete_part():
 def delete_cap(id):
     capteur = get_capteur(id)
     capteur.clear_datas()
+    a = Actions(
+        contenu = "Suppresion du capteur "+capteur.get_name(),
+        liste = 1
+    )
+    db.session.add(a)
     db.session.delete(capteur)
     db.session.commit()
     return redirect(url_for("capteur"))
@@ -244,6 +270,11 @@ def new_parterre_saving():
                 o.add_coordonnee(c)
             except Exception as e:
                 db.session.rollback()
+        p = Actions(
+            contenu = "Ajout d'un nouveau parterre "+f.get_name(),
+            liste = 1
+        )
+        db.session.add(p)
         db.session.commit()
         return redirect(url_for('parterre_info', id = o.get_id()))
     return render_template(
@@ -267,6 +298,7 @@ def edit_capteur(id):
 def save_capteur():
     f = CapteurForm()
     a = get_capteur(f.get_id())
+    na = a.get_name()
     if f.validate_on_submit():
         a.set_name(f.get_name())
         a.set_num(f.get_phoneNumber())
@@ -275,6 +307,11 @@ def save_capteur():
             a.set_parterre(f.get_parterre().get_id())
         if a.get_typeMesure() != f.get_typeMesure().get_id():
             a.set_typeMesure(f.get_typeMesure().get_id())
+        ac = Actions(
+            contenu = "Modification du capteur "+na+" -> "+a.get_name(),
+            liste = 1
+        )
+        db.session.add(ac)
         db.session.commit()
         return redirect(url_for(
             "capteur_info",
@@ -301,6 +338,7 @@ def edit_parterre(id):
 def save_parterre():
     f= ParterreForm()
     a = get_parterre(f.get_id())
+    na = a.get_name()
     if f.validate_on_submit():
         a.set_name(f.get_name())
         form = request.form
@@ -316,6 +354,11 @@ def save_parterre():
                                 num      = num)
                 num = num+1
                 a.add_coordonnee(c)
+        p = Actions(
+            contenu = "Modification du parterre "+na+" -> "+a.get_name(),
+            liste = 1
+        )
+        db.session.add(p)
         db.session.commit()
         return redirect(url_for("parterre_info", id = a.get_id()))
     f.next.data = "save_parterre"
@@ -334,6 +377,11 @@ def delete_parterre(id):
     a.remove_coordonnees()
     a.clear_datas()
     db.session.delete(a)
+    p = Actions(
+        contenu = "Suppresion du parterre "+a.get_name(),
+        liste = 1
+    )
+    db.session.add(p)
     db.session.commit()
     return redirect(url_for("parterre"))
 
@@ -363,6 +411,11 @@ def new_plante_saving():
             parterre_id = f.get_parterre().get_id())
         f.get_parterre().add_plante(o)
         db.session.add(o)
+        p = Actions(
+            contenu = "Ajout d'une plante "+f.get_name() + " au parterre "+ f.get_parterre().get_name(),
+            liste = 1
+        )
+        db.session.add(p)
         db.session.commit()
         return redirect(url_for('parterre_info', id = o.get_parterre()))
     return render_template(
@@ -382,6 +435,11 @@ def save_plante():
         a.set_comportement(f.get_comportement())
         a.set_taux_humidite(f.get_taux_humidite())
         a.set_quantite(f.get_quantite())
+        p = Actions(
+            contenu = "Modification de la plante "+a.get_name() + " du parterre "+ a.get_parterre().get_name(),
+            liste = 1
+        )
+        db.session.add(p)
         db.session.commit()
         return redirect(url_for(
             "plante_info", id = f.get_id()))
@@ -407,6 +465,11 @@ def delete_plante(id):
     plante = get_plante(id)
     db.session.delete(plante)
     get_parterre(plante.get_parterre()).delete_plante(plante)
+    p = Actions(
+        contenu = "Suppression de la plante "+plante.get_name() + " au parterre "+ plante.get_parterre().get_name(),
+        liste = 1
+    )
+    db.session.add(p)
     db.session.commit()
     return redirect(url_for("parterre"))
 

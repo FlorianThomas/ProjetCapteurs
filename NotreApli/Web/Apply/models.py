@@ -64,7 +64,7 @@ association_capteur_donnee = db.Table("association_capteur_donnee",
 association_liste_actions=db.Table("association_liste_actions",
                                     db.metadata,
                                     db.Column("idListe", db.Integer, db.ForeignKey("liste.idListe"), primary_key = True),
-                                    db.Column("idActions", db.Integer, db.ForeignKey("action.idActions"),primary_key=True))
+                                    db.Column("idActions", db.Integer, db.ForeignKey("actions.idActions"),primary_key=True))
 
 class Coordonnees(db.Model):
     """
@@ -413,8 +413,9 @@ class Actions(db.Model):
     idActions=db.Column(db.Integer, primary_key= True)
     contenu=db.Column(db.String(100))
 
-    def __init__(self,contenu):
+    def __init__(self,contenu,liste):
         self.contenu=contenu
+        get_listeActions(liste).add_actions(self)
 
     def __repr__(self):
         return "%s" % (self.contenu)
@@ -425,17 +426,28 @@ class Actions(db.Model):
     def getContenu(self):
         return self.contenu
 
+
 class Liste(db.Model):
+
     idListe=db.Column(db.Integer, primary_key=True)
+
     listeActions    = db.relationship("Actions",
                                       secondary = "association_liste_actions",
                                       lazy = "dynamic",
-                                      backref = db.backref("action", lazy = "dynamic"),
-                                      order_by  = "Actions.id")
+                                      backref = db.backref("actions", lazy = "dynamic"),
+                                      order_by  = "desc(Actions.idActions)")
 
-    
-    def get_val(self):
+    def __repr__(self):
+        return "Liste"
+
+    def get_idListe(self):
+        return self.idListe
+
+    def get_val_actions(self):
         return self.listeActions
+
+    def add_actions(self, data):
+        self.listeActions.append(data)
 
 
 
@@ -482,3 +494,6 @@ def get_bac_a_sable():
         if parterre.get_name()=="Bac à sable":
             return parterre
     return None
+
+def get_listeActions(id):
+    return  Liste.query.get(id)
