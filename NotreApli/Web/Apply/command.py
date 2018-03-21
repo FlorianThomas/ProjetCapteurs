@@ -108,6 +108,15 @@ def loaddb():
                       parterre   = p1.get_id())
     db.session.add(capteur2)
 
+    capteur3 = Capteur(name       = "Capteur3",
+                      intervalle = 10,
+                      tel        = "0123458789",
+                      TypeMesure = typeM2.get_id(),
+                      parterre   = p1.get_id())
+    capteur3.set_X(1.926739)
+    capteur3.set_Y(47.843282)
+    db.session.add(capteur3)
+
     db.session.commit()
 
     #Creation of TypePlantes

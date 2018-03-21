@@ -366,6 +366,7 @@ def new_plante_saving():
     return render_template(
         "create-plante.html",
         form  = f,
+        parterre = f.get_parterre().get_id(),
         title = "Nouvelle plante",
         param = "create")
 
@@ -386,6 +387,7 @@ def save_plante():
         "create-plante.html",
         title = a.get_name()+" - edit",
         form  = f,
+        plante = a,
         param = "modif")
 
 @app.route("/Plante/info/<int:id>")
