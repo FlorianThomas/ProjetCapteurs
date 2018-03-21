@@ -20,7 +20,7 @@
                    class_ = "form-control") }}
 
       {{ form.phoneNumber.label }}
-      {{ form.phoneNumber(size = 50,
+      {{ form.phoneNumber(size = 5,
                    class_ = "form-control") }}
 
       {{ form.TypeMesure.label }}
@@ -44,6 +44,12 @@
   {% elif form.phoneNumber.errors %}
       <ul class = "list-group">
       {% for e in form.phoneNumber.errors %}
+        <li class = "list-group-item list-group-item-danger">{{ e }}</li>
+      {% endfor %}
+      </ul>
+  {% elif form.intervalTime.errors %}
+      <ul class = "list-group">
+      {% for e in form.intervalTime.errors %}
         <li class = "list-group-item list-group-item-danger">{{ e }}</li>
       {% endfor %}
       </ul>

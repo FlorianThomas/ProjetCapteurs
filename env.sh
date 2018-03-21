@@ -14,11 +14,11 @@ fi
 
 echo
 
-# read -p "Voulez vous (re)charger la base de données ?[y/n]" reponse
-# if echo "$reponse" | grep -iq "^y" ;then
-#   rm NotreApli/Web/tuto.db
-#   ./NotreApli/Web/manage.py loaddb
-# fi
+read -p "Voulez vous (re)charger la base de données ?[y/n]" reponse
+if echo "$reponse" | grep -iq "^y" ;then
+  rm NotreApli/Web/tuto.db
+  ./NotreApli/Web/manage.py loaddb
+fi
 
 echo
 

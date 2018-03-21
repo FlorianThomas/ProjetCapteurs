@@ -84,7 +84,7 @@ class CapteurForm(FlaskForm):
     id           = HiddenField('id')
     name         = StringField('Nom : ', validators = [DataRequired()])
     intervalTime = IntegerField('Intervalle temps : ')
-    phoneNumber  = StringField('Numéro de téléphone : ')
+    phoneNumber  = IntegerField('Numéro de téléphone : ')
     TypeMesure   = QuerySelectField("Type de mesure mesurée :", query_factory = lambda : get_typeMesures())
     parterre     = QuerySelectField("Parterre associé :", query_factory = lambda : get_parterres())
     next         = HiddenField()
@@ -161,7 +161,7 @@ class PlanteForm(FlaskForm):
 
     id = HiddenField('id')
     nom_plante = StringField('Nom', validators = [DataRequired()])
-    comportement = StringField('comportement')
+    comportement = StringField('Comportement')
     taux_humidite = FloatField('Taux en humidité nécessaire')
     quantite = IntegerField('Nombre')
     parterre = QuerySelectField("Parterre associé :", query_factory = lambda : get_parterres())

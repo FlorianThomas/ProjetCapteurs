@@ -6,7 +6,7 @@
       <form method = "POST" action = "{{ url_for('delete_part') }}">
         <h3>Veuillez selectionner un parterre :</h3>
         <div class="delete">
-        <select name = "del" class="del">
+        <select name = "del" class="del" onchange="recupere()" id="select">
           <option value = "">Faites votre choix</option>
           {% for parterre in liste %}
             {% if parterre.get_name() != "Bac à sable" %}
@@ -15,7 +15,7 @@
           {% endfor %}
         </select>
       </div>
-      <div class="">
+      <div id="sppr">
         <a href="#popup1" id="Supp" class="btn btn-danger">Supprimer</a>
       </div>
       <div id="popup1" class = "overlay">
@@ -33,5 +33,30 @@
   </form>
 </div>
 
+
+{% endblock %}
+{% block scripts %}
+{{super()}}
+  <script language="JavaScript">
+
+    function cacher() {
+      $('#sppr').css('visibility','hidden');
+      console.log('ok');
+    }
+
+    function recupere(){
+
+      var select = document.getElementById("select" );
+      var valeur = select.options[select.selectedIndex].value;
+      if(valeur==select.options[0].value){
+        $('#sppr').css('visibility','hidden');
+      }
+      else{
+        $('#sppr').css('visibility','visible');
+      }
+    }
+
+    window.onload = cacher();
+  </script>
 
 {% endblock %}

@@ -1,6 +1,9 @@
 {% extends "header.html" %}
 {% block main %}
-<h1 class="h1">Bienvenue à tous ! </h1>
+<div id="homeH1" class="h1">
+	<h1>Bienvenue à tous !</h1>
+	<img src="{{ url_for('static',filename='arduinow.jpg')}}">
+</div>
 
 <!-- widget meteo -->
 <div id="widget_7d2188136044dec14cb3e5e2f596a021">
@@ -25,7 +28,7 @@
 			<p> Récuperation des valeurs une fois par semaine</p>
 		</li>
 		<li>
-			
+
 		</li>
 	</ul>
 </aside>
@@ -33,7 +36,6 @@
   <h2>
     Actutalités :
   </h2>
-	<p>Attention aux gelées du matin !! </p>
 
 <div id="carte_278bbc02b664b70e2e7e982b5b29e336">
 <a href="http://www.mymeteo.info/r/france_8h" title="France données météo">France données météo</a>

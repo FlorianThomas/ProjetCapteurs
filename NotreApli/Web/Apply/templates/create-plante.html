@@ -70,7 +70,7 @@
               type ="submit"
               value = "Enregistrer">
     {% if param == "create" %}
-      <a href="{{ url_for('parterre_info',id=parterre)}}" class = "btn btn-danger">Annuler</a>
+      <a href="{{ url_for('parterre_info',id = parterre)}}" class = "btn btn-danger">Annuler</a>
     {% elif param == "modif" %}
       <a href="{{ url_for('plante_info', id = plante.get_id()) }}" class = "btn btn-danger">Annuler</a>
     {% endif %}

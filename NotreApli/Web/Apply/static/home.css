@@ -506,3 +506,15 @@ body{
   padding: 1vh 6vw;
   font-size: large;
 }
+#homeH1{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#homeH1 h1{
+  flex: 1;
+}
+
+#homeH1 img{
+  width: 15%;
+}
