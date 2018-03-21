@@ -317,10 +317,11 @@ def save_parterre():
                 a.add_coordonnee(c)
         db.session.commit()
         return redirect(url_for("parterre_info", id = a.get_id()))
+    f.next.data = "save_parterre"
     return render_template("create-parterre.html",
                 title= a.get_name()+"  - edit",
                 form = f,
-                parterre=a,
+                parterre = a,
                 param = "modif")
 
 @app.route("/Supprimer/Parterre/<int:id>")
