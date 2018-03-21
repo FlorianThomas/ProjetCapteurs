@@ -279,6 +279,7 @@ def save_capteur():
         return redirect(url_for(
             "capteur_info",
             id    = f.get_id()))
+    f.next.data = "save_capteur"
     return render_template(
         "addCapteur.html",
         title = a.get_name()+" - edit",
@@ -384,6 +385,7 @@ def save_plante():
         db.session.commit()
         return redirect(url_for(
             "plante_info", id = f.get_id()))
+    f.next.data = "save_plante"
     return render_template(
         "create-plante.html",
         title = a.get_name()+" - edit",
