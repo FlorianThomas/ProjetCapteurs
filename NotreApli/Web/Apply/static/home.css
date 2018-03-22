@@ -521,8 +521,9 @@ body{
 .scrollAction {
   overflow: auto;
   width: inherit;
-  height: 90%;
-  margin-right: 1vw;
+  height: 50vh;
+  border: thin solid whitesmoke;
+  margin: 2vh 0vw;
 }
 .listeAction{
   padding-top: 1vh;
@@ -530,4 +531,13 @@ body{
 }
 .listeAction li{
   padding-top: 0.8vh;
+  padding-bottom: 0.8vh;
+}
+
+.listeAction li:hover{
+ background-color: whitesmoke;
+  border: solid thin whitesmoke;
+}
+.section h2, .aside h2{
+ text-decoration: underline;  
 }
