@@ -518,3 +518,16 @@ body{
 #homeH1 img{
   width: 15%;
 }
+.scrollAction {
+  overflow: auto;
+  width: inherit;
+  height: 90%;
+  margin-right: 1vw;
+}
+.listeAction{
+  padding-top: 1vh;
+  list-style-type: circle;
+}
+.listeAction li{
+  padding-top: 0.8vh;
+}

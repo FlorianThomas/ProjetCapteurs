@@ -20,17 +20,13 @@
   <h2>
     Historique des actions :
   </h2>
-	<ul>
-		<li>
-			<p>Relever tous les lundi </p>
-		</li>
-		<li>
-			<p> Récuperation des valeurs une fois par semaine</p>
-		</li>
-		<li>
-
-		</li>
-	</ul>
+	<div class="scrollAction">
+		<ul class="listeAction">
+			{% for action in liste.get_val_actions() %}
+			<li>{{ action }}</li>
+			{% endfor %}
+		</ul>
+	</div>
 </aside>
 <section class="section">
   <h2>

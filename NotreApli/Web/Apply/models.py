@@ -60,6 +60,12 @@ association_capteur_donnee = db.Table("association_capteur_donnee",
                                       db.metadata,
                                       db.Column("capteur_id", db.Integer, db.ForeignKey("capteur.idCapt"), primary_key = True),
                                       db.Column("donnee_id", db.Integer, db.ForeignKey("donnee.idDonnee"), primary_key = True))
+
+association_liste_actions=db.Table("association_liste_actions",
+                                    db.metadata,
+                                    db.Column("idListe", db.Integer, db.ForeignKey("liste.idListe"), primary_key = True),
+                                    db.Column("idActions", db.Integer, db.ForeignKey("actions.idActions"),primary_key=True))
+
 class Coordonnees(db.Model):
     """
     Coordinates can specify the position of a parterre
@@ -403,6 +409,48 @@ class Donnee(db.Model):
     def get_date_donnee(self):
         return str(self.dateRel)
 
+class Actions(db.Model):
+    idActions=db.Column(db.Integer, primary_key= True)
+    contenu=db.Column(db.String(100))
+
+    def __init__(self,contenu,liste):
+        self.contenu=contenu
+        get_listeActions(liste).add_actions(self)
+
+    def __repr__(self):
+        return "%s" % (self.contenu)
+
+    def getIdActions(self):
+        return self.idActions
+
+    def getContenu(self):
+        return self.contenu
+
+
+class Liste(db.Model):
+
+    idListe=db.Column(db.Integer, primary_key=True)
+
+    listeActions    = db.relationship("Actions",
+                                      secondary = "association_liste_actions",
+                                      lazy = "dynamic",
+                                      backref = db.backref("actions", lazy = "dynamic"),
+                                      order_by  = "desc(Actions.idActions)")
+
+    def __repr__(self):
+        return "Liste"
+
+    def get_idListe(self):
+        return self.idListe
+
+    def get_val_actions(self):
+        return self.listeActions
+
+    def add_actions(self, data):
+        self.listeActions.append(data)
+
+
+
 
 def get_user(username):
     return Utilisateur.query.filter(Utilisateur.idU==username).one()
@@ -446,3 +494,6 @@ def get_bac_a_sable():
         if parterre.get_name()=="Bac à sable":
             return parterre
     return None
+
+def get_listeActions(id):
+    return  Liste.query.get(id)
