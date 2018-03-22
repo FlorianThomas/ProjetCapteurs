@@ -338,45 +338,45 @@ class Capteur(db.Model):
         for donnee in self.get_vals():
             self.listeDonnees.remove(donnee)
 
-class AlesDroits(db.Model):
-    """
-    The user idU has following rights for a Parterre idP: read, modify, suppress.
-    These rights are given by the creator of the Parterre.
-    """
-
-    Lecture     = db.Column(db.Boolean)
-    Edition     = db.Column(db.Boolean)
-    Suppression = db.Column(db.Boolean)
-    idP         = db.Column(db.Integer, db.ForeignKey("parterre.idP"), primary_key = True)
-    idU         = db.Column(db.String(50), db.ForeignKey("utilisateur.idU"), primary_key = True)
-
-    def __init__(self, Lecture, Edition, Suppression, idP, idU):
-        self.Lecture = Lecture
-        self.Edition = Edition
-        self.Suppression = Suppression
-        self.idP = idP
-        self.idU = idU
-
-    def get_id(self):
-        return (self.idP, self.idU)
-
-    def get_lecture(self):
-        return self.Lecture
-
-    def get_edition(self):
-        return self.Edition
-
-    def get_suppression(self):
-        return self.Suppression
-
-    def set_Lecture(self, NewLecture):
-        self.Lecture = NewLecture
-
-    def set_edition(self, NewEdition):
-        self.Edition = NewEdition
-
-    def set_suppression(self, NewSuppression):
-        self.Suppression = NewSuppression
+#*class AlesDroits(db.Model):
+#    """
+#    The user idU has following rights for a Parterre idP: read, modify, suppress.
+#    These rights are given by the creator of the Parterre.
+#    """
+#
+#    Lecture     = db.Column(db.Boolean)
+#    Edition     = db.Column(db.Boolean)
+#    Suppression = db.Column(db.Boolean)
+#    idP         = db.Column(db.Integer, db.ForeignKey("parterre.idP"), primary_key = True)
+#    idU         = db.Column(db.String(50), db.ForeignKey("utilisateur.idU"), primary_key = True)
+#
+#    def __init__(self, Lecture, Edition, Suppression, idP, idU):
+#        self.Lecture = Lecture
+#        self.Edition = Edition
+#        self.Suppression = Suppression
+#        self.idP = idP
+#        self.idU = idU
+#
+#    def get_id(self):
+#        return (self.idP, self.idU)
+#
+#    def get_lecture(self):
+#        return self.Lecture
+#
+#    def get_edition(self):
+#        return self.Edition
+#
+#    def get_suppression(self):
+#        return self.Suppression
+#
+#    def set_Lecture(self, NewLecture):
+#        self.Lecture = NewLecture
+#
+#    def set_edition(self, NewEdition):
+#        self.Edition = NewEdition
+#
+#    def set_suppression(self, NewSuppression):
+#        self.Suppression = NewSuppression
 
 
 class Donnee(db.Model):
@@ -453,47 +453,86 @@ class Liste(db.Model):
 
 
 def get_user(username):
+    """
+    recover the user place in parameter
+    """
     return Utilisateur.query.filter(Utilisateur.idU==username).one()
 
 @login_manager.user_loader
 def load_user(username):
+    """
+    recover the user place in parameter
+    """
     return Utilisateur.query.get(username)
 
 def get_parterres():
+    """
+    get all the ground
+    """
     return Parterre.query.all()
 
 def get_parterre(id):
+    """
+    retrieve a ground from an id
+    """
     return Parterre.query.get(id)
 
 def get_typeMesures():
+    """
+    retrieve the types of measurement, sort by name
+    """
     return TypeMesure.query.order_by(TypeMesure.nom_typeM)
 
 def get_capteurs():
+    """
+    get all the sensors
+    """
     return Capteur.query.all()
 
 def get_capteur(id):
+    """
+    retrieve a sensor from an id
+    """
     return Capteur.query.get(id)
 
 def get_capteur_phone(num):
+    """
+    retrieve a sensor by phone number
+    """
     return Capteur.query.filter(Capteur.numTel==num)
 
 def get_capteurs_parterre(id):
+    """
+    recover a sensor from the id of a ground
+    """
     return Capteur.query.filter(Capteur.parterre_id==id).all()
 
 def get_plante(id):
+    """
+    recover a type of plant thanks to its id
+    """
     return TypePlante.query.get(id)
 
 def get_typeMesure(id):
+    """
+    recover a type of measure thanks to its id
+    """
     return TypeMesure.query.get(id)
 
-def get_droits():
-    return AlesDroits.query.all()
+#def get_droits():
+#    return AlesDroits.query.all()
 
 def get_bac_a_sable():
+    """
+    recover the ground sandbox
+    """
     for parterre in get_parterres():
         if parterre.get_name()=="Bac à sable":
             return parterre
     return None
 
 def get_listeActions(id):
+    """
+    recover an action thanks to his id
+    """
     return  Liste.query.get(id)
