@@ -8,10 +8,10 @@ def loaddb():
     Generates database and fulfills it with false datas
     """
 
-    from .models import Coordonnees, Utilisateur, Parterre, TypeMesure, TypePlante, Capteur, AlesDroits, Donnee, Liste, Actions
+    from .models import Coordonnees, Utilisateur, Parterre, TypeMesure, TypePlante, Capteur, Donnee, Liste, Actions
     db.create_all() #Creating tables
     db.session.commit()
-    
+
     l = Liste(idListe = 1)
     db.session.add(l)
 
