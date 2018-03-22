@@ -316,6 +316,7 @@ def save_capteur():
         return redirect(url_for(
             "capteur_info",
             id    = f.get_id()))
+    f.next.data = "save_capteur"
     return render_template(
         "addCapteur.html",
         title = a.get_name()+" - edit",
@@ -360,10 +361,11 @@ def save_parterre():
         db.session.add(p)
         db.session.commit()
         return redirect(url_for("parterre_info", id = a.get_id()))
+    f.next.data = "save_parterre"
     return render_template("create-parterre.html",
                 title= a.get_name()+"  - edit",
                 form = f,
-                parterre=a,
+                parterre = a,
                 param = "modif")
 
 @app.route("/Supprimer/Parterre/<int:id>")
@@ -419,6 +421,7 @@ def new_plante_saving():
     return render_template(
         "create-plante.html",
         form  = f,
+        parterre = f.get_parterre().get_id(),
         title = "Nouvelle plante",
         param = "create")
 
@@ -440,10 +443,12 @@ def save_plante():
         db.session.commit()
         return redirect(url_for(
             "plante_info", id = f.get_id()))
+    f.next.data = "save_plante"
     return render_template(
         "create-plante.html",
         title = a.get_name()+" - edit",
         form  = f,
+        plante = a,
         param = "modif")
 
 @app.route("/Plante/info/<int:id>")
